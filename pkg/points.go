@@ -51,3 +51,7 @@ func (inst *Module) getAllPoints(pluginName string) ([]*model.Point, error) {
 	}
 	return points, err
 }
+
+func (inst *Module) addPoint(body *model.Point) (*model.Point, error) {
+	return inst.grpcMarshaller.CreatePoint(body)
+}

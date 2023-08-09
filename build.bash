@@ -10,11 +10,11 @@ else
     echo PATH PROVIDED WILL USE: $code_path
 fi
 
-path=$HOME/$code_path/rubix-os
+path=$HOME/$code_path/rubix-os-build
 
 echo $path
 echo "****EXISTING MODULES****"
 ls  $path/data/modules
 echo "****EXISTING MODULES****"
 
-go build -o module-contrib-demo && mv -f module-contrib-demo $path/data/modules && cd $path && bash build.bash system
+go build -o module-contrib-demo && mkdir -p $path/data/modules && mv -f module-contrib-demo $path/data/modules && cd $path && ./app-amd64

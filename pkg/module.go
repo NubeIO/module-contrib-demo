@@ -16,6 +16,7 @@ type Module struct {
 	ErrorOnDB       bool
 	moduleDirectory string
 	bom             *bom.Client
+	demoPointUUID   string
 }
 
 func (inst *Module) Init(dbHelper shared.DBHelper, moduleName string) error {

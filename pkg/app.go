@@ -10,6 +10,10 @@ import (
 
 const name = "module-contrib-demo"
 
+const nameNetwork = "demo-network"
+const nameDevice = "demo-device"
+const namePoint = "demo-point"
+
 const Permission = 0755
 
 func (inst *Module) networkUpdateSuccess(uuid string) error {

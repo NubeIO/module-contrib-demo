@@ -9,23 +9,23 @@ import (
 )
 
 type Config struct {
-	Schedule Schedule `yaml:"schedule"`
-	LogLevel string   `yaml:"log_level"`
-}
-
-type Schedule struct {
-	Frequency time.Duration `yaml:"frequency"`
+	Town     string        `yaml:"town"`
+	State    string        `yaml:"state"`
+	LoopTime time.Duration `yaml:"loop_time"`
+	LogLevel string        `yaml:"log_level"`
 }
 
 func (inst *Module) DefaultConfig() *Config {
-	schedule := Schedule{
-		Frequency: 60 * time.Second,
-	}
-
 	return &Config{
-		Schedule: schedule,
-		LogLevel: "INFO",
+		Town:     "Sydney",
+		State:    "NSW",
+		LoopTime: 1,
+		LogLevel: "INFO", // INFO, DEBUG, ERROR
 	}
+}
+
+func (inst *Module) getConfig() *Config {
+	return inst.config
 }
 
 func (inst *Module) GetConfig() interface{} {

@@ -1,15 +1,17 @@
 package pkg
 
 import (
+	"encoding/json"
 	"errors"
-	log "github.com/sirupsen/logrus"
 	"strings"
+	"time"
 )
 
 const (
 	jsonSchemaNetwork = "/schema/json/network"
 	jsonSchemaDevice  = "/schema/json/device"
 	jsonSchemaPoint   = "/schema/json/point"
+	ping              = "/ping"
 	getPoints         = "/points"
 	getWeather        = "/weather"
 )
@@ -33,8 +35,26 @@ func urlIsCorrectModule(path string) bool {
 	return false
 }
 
+type helloWorld struct {
+	A              string    `json:"a"`
+	B              int       `json:"b"`
+	C              bool      `json:"c"`
+	TimeDateFormat string    `json:"time_date_format"`
+	TimeDate       time.Time `json:"time_date"`
+}
+
 func (inst *Module) Get(path string) ([]byte, error) {
-	log.Error(11111, path)
+
+	if path == ping {
+		return json.Marshal(helloWorld{
+			A:              "ping",
+			B:              0,
+			C:              false,
+			TimeDateFormat: time.Now().Format(time.Stamp),
+			TimeDate:       time.Now().UTC(),
+		})
+	}
+
 	if strings.Contains(path, getWeather) { // test endpoint for getting the weather http://0.0.0.0:1660/api/modules/module-contrib-demo/weather/Sydney/NSW
 		parts := urlSplit(path)
 		if len(parts) == 3 {

@@ -3,6 +3,7 @@ package pkg
 import (
 	"encoding/json"
 	"errors"
+	log "github.com/sirupsen/logrus"
 	"strings"
 	"time"
 )
@@ -19,11 +20,15 @@ const (
 const errNotFound = "not found"
 
 func urlSplit(path string) []string {
-	return strings.Split(path, "/")
-}
-
-func urlLen(path string) int {
-	return len(strings.Split(path, "/"))
+	var out []string
+	parts := strings.Split(path, "/")
+	for i, part := range parts {
+		log.Infof("part: %s %d count: %d", part, len(part), i)
+		if len(part) > 0 {
+			out = append(out, part)
+		}
+	}
+	return out
 }
 
 func urlIsCorrectModule(path string) bool {
@@ -44,8 +49,9 @@ type helloWorld struct {
 }
 
 func (inst *Module) Get(path string) ([]byte, error) {
-
-	if path == ping {
+	log.Infof("HTTP-GET path: %s", path)
+	//log.Info("HTTP-GET path:", strings.Contains(path, getWeather))
+	if path == ping { //http://0.0.0.0:1660/api/modules/module-contrib-demo/ping
 		return json.Marshal(helloWorld{
 			A:              "ping",
 			B:              0,
@@ -57,14 +63,11 @@ func (inst *Module) Get(path string) ([]byte, error) {
 
 	if strings.Contains(path, getWeather) { // test endpoint for getting the weather http://0.0.0.0:1660/api/modules/module-contrib-demo/weather/Sydney/NSW
 		parts := urlSplit(path)
-		if len(parts) == 3 {
-			weather, _, _, err := inst.getWeather(parts[1], parts[2])
-			if err != nil {
-				return weather, err
-			}
+		if len(parts) >= 3 {
+			weather, _, err := inst.getWeather(parts[1], parts[2])
+			return weather, err
 		}
 	}
-
 	return nil, errors.New(path)
 }
 

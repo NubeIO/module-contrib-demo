@@ -50,7 +50,10 @@ func (inst *Module) getWeather(town, state string) ([]byte, *bom.Observations, e
 	if state == "" {
 		state = "NSW"
 	}
+	log.Infof("GET WEATHER FOR %s %s", town, state)
 	get, err := inst.bom.ObservationByTown(town, state)
+	log.Info("!!!!!!!!")
+	log.Info(get)
 	if err != nil {
 		return nil, nil, err
 	}

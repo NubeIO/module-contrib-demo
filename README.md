@@ -29,24 +29,35 @@ go get github.com/NubeDev/bom-api
 ## rename module name as required
 
 ```golang
-const name = "module-contrib-demo-test-test"
+const name = "module-contrib-demo-test"
 ```
 
-## renaming helpers
+## renaming file
+
+if you want to use this module as a getting started module, you need to do some renaming
+
+set your path (environment variable)
+```
+DIR=<YOUR/PATH/module-contrib-demo>
+```
+example
+```
+DIR=/home/aidan/code/go/module-contrib-demo
+```
 
 rename module name
 ```
-find /home/aidan/code/go/module-contrib-demo -type f -print0 | xargs -0 sed -i 's#const name = "module-contrib-demo"#const name = "module-contrib-demo-test"#g'
+find $DIR -type f -name "*.go" -print0 | xargs -0 sed -i 's#const name = "module-contrib-demo"#const name = "module-contrib-demo-test"#g'
 ```
 
 rename library name
 ```
-find /home/aidan/code/go/module-contrib-demo -type f -print0 | xargs -0 sed -i 's#github.com/NubeIO/module-contrib-demo-test#github.com/NubeIO/module-contrib-demo-test#g'
+find $DIR -type f -name "*.go" -print0 | xargs -0 sed -i 's#github.com/NubeIO/module-contrib-demo-test#github.com/NubeIO/module-contrib-demo-test#g'
 ```
 
 rename bash script
 ```
-find /home/aidan/code/go/module-contrib-demo -type f -print0 | xargs -0 sed -i 's#module-contrib-demo#module-contrib-demo-test#g'
+find $DIR -type f -name "*.bash" -print0 | xargs -0 sed -i 's#module-contrib-demo#module-contrib-demo-test#g'
 ```
 
 

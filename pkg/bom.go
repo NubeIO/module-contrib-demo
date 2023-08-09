@@ -39,7 +39,7 @@ func (inst *Module) weatherLoop() ([]byte, *bom.Search, string, error) {
 			return nil, nil, "", err
 		}
 		log.Infof("loop weather for: %s %s updated point value ok: %f", state, town, currentTemp)
-		time.Sleep(loopTime * time.Minute)
+		time.Sleep(1 * time.Minute)
 	}
 }
 

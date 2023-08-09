@@ -17,4 +17,4 @@ echo "****EXISTING MODULES****"
 ls  $path/data/modules
 echo "****EXISTING MODULES****"
 
-go build -o module-contrib-demo && mkdir -p $path/data/modules && mv -f module-contrib-demo $path/data/modules && cd $path && bash build.bash
+go build -o module-contrib-demo && mkdir -p $path/data/modules && mv -f module-contrib-demo $path/data/modules && cd $path && bash build.bash system

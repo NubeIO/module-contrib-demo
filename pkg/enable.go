@@ -1,64 +1,64 @@
 package pkg
 
 import (
-	"github.com/NubeDev/bom-api/bom"
+	"github.com/NubeIO/bom-api/bom"
 	"github.com/NubeIO/nubeio-rubix-lib-models-go/pkg/v1/model"
 	log "github.com/sirupsen/logrus"
 )
 
-func (inst *Module) Enable() error {
-	log.Error("plugin is enabling...%s", name)
-	// init BOM client
-	inst.bom = bom.New(&bom.Client{})
-
-	// add new point for demo
-	point, err := inst.getPointByName(nameNetwork, nameDevice, namePoint)
+func (m *Module) Enable() error {
+	log.Errorf("enabling plugin %s...", name)
+	m.bom = bom.New(&bom.Client{})
+	networkUUID, deviceUUID, pointUUID, err := m.getPointByName(networkName, deviceName, pointName)
 	if err != nil {
-		log.Errorf("adding network: no existing point: %s", err.Error())
-		point, err = inst.addDemoPoint("", nameNetwork, nameDevice, namePoint)
+		log.Infof("adding demo point coz: %s", err.Error())
+		point, err := m.addDemoPoint(networkName, deviceName, pointName, networkUUID, deviceUUID)
 		if err != nil {
-			log.Errorf("adding network: error, now try and get existing point: %s", err.Error())
+			log.Errorf("couldn't add demo points: %s", err.Error())
 			return err
 		}
-		inst.demoPointUUID = point.UUID
-		log.Infof("point was existing, uuid: %s", point.UUID)
+		m.demoPointUUID = point.UUID
 	} else {
-		inst.demoPointUUID = point.UUID
-		log.Infof("adding new point ok uuid: %s", point.UUID)
+		m.demoPointUUID = *pointUUID
+		log.Infof("we already have point with uuid: %s", *pointUUID)
 	}
-	go inst.weatherLoop()
+	m.enable = true
+	go m.weatherPoll()
 	return nil
 }
 
-func (inst *Module) Disable() error {
+func (m *Module) Disable() error {
 	log.Infof("plugin is disabled...%s", name)
+	m.enable = false
 	return nil
 }
 
-// addDemoPoint add new point if not existing, if pluginName is "" it will use the system plugin
-func (inst *Module) addDemoPoint(pluginName, networkName, deviceName, pointName string) (*model.Point, error) {
-	if pluginName == "" {
-		pluginName = "system"
+// addDemoPoint add new point if not existing
+func (m *Module) addDemoPoint(networkName, deviceName, pointName string, networkUUID, deviceUUID *string) (*model.Point, error) {
+	if networkUUID == nil {
+		network, err := m.grpcMarshaller.CreateNetwork(&model.Network{
+			Name:       networkName,
+			PluginPath: "system",
+		})
+		if err != nil {
+			return nil, err
+		}
+		networkUUID = &network.UUID
 	}
-	var err error
-	network, err := inst.grpcMarshaller.CreateNetwork(&model.Network{
-		Name:       networkName,
-		PluginPath: pluginName,
-	})
-	if err != nil {
-		return nil, err
-	}
-	device, err := inst.grpcMarshaller.CreateDevice(&model.Device{
-		Name:        deviceName,
-		NetworkUUID: network.UUID,
-	})
-	if err != nil {
-		return nil, err
-	}
-	point, err := inst.grpcMarshaller.CreatePoint(&model.Point{
-		Name:       pointName,
-		DeviceUUID: device.UUID,
-	})
 
-	return point, err
+	if deviceUUID == nil {
+		device, err := m.grpcMarshaller.CreateDevice(&model.Device{
+			Name:        deviceName,
+			NetworkUUID: *networkUUID,
+		})
+		if err != nil {
+			return nil, err
+		}
+		deviceUUID = &device.UUID
+	}
+
+	return m.grpcMarshaller.CreatePoint(&model.Point{
+		Name:       pointName,
+		DeviceUUID: *deviceUUID,
+	})
 }

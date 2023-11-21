@@ -1,101 +1,66 @@
-# example module to show the use case of rubix-os (ROS)
+# Introduction
 
-This module will fetch data from the `Australian government bureau of meteorology` and write it to a point 
+This module will fetch data from the `Australian government bureau of meteorology` and write it to a point.
 
-## to build and run
+## How to build
 
-to build and run rubix-os you can use the bash script
-
-`bash build.bash <YOUR_ROS_PATH>`
-
-example
-```
-bash build.bash code/go
-```
-
-
-
-## init your go lang project
+#### Download private repo dependencies
 
 ```
-go mod init github.com/NubeIO/module-contrib-demo-test-test
+export GITHUB_TOKEN=<YOUR_GITHUB_TOKEN>
+git config --global url."https://$GITHUB_TOKEN:x-oauth-basic@github.com/NubeIO".insteadOf "https://github.com/NubeIO"
 ```
 
-## add a 3rd party dependency
-```
-go get github.com/NubeDev/bom-api
-```
-
-## rename module name as required
-
-```golang
-const name = "module-contrib-demo-test"
-```
-
-## renaming file
-
-if you want to use this module as a getting started module, you need to do some renaming
-
-set your path (environment variable)
-```
-DIR=<YOUR/PATH/module-contrib-demo>
-```
-example
-```
-DIR=/home/aidan/code/go/module-contrib-demo
-```
-
-rename module name
-```
-find $DIR -type f -name "*.go" -print0 | xargs -0 sed -i 's#const name = "module-contrib-demo"#const name = "module-contrib-demo-test"#g'
-```
-
-rename library name
-```
-find $DIR -type f -name "*.go" -print0 | xargs -0 sed -i 's#github.com/NubeIO/module-contrib-demo-test#github.com/NubeIO/module-contrib-demo-test#g'
-```
-
-rename bash script
-```
-find $DIR -type f -name "*.bash" -print0 | xargs -0 sed -i 's#module-contrib-demo#module-contrib-demo-test#g'
-```
-
-
-* [app.go](pkg/app.go)
-* [main.go](main.go)
-* [build.bash](build.bash)
-
-### see naming rules
-https://nubeio.github.io/rubix-ce-docs/docs/api-docs/modules/
-
-
-## add an api
-
-[api.go](pkg/api.go)
-
-
-```golang
-type helloWorld struct {
-	A              string    `json:"a"`
-	B              int       `json:"b"`
-	C              bool      `json:"c"`
-	TimeDateFormat string    `json:"time_date_format"`
-	TimeDate       time.Time `json:"time_date"`
-}
-
-func (inst *Module) Get(path string) ([]byte, error) {
-	if path == "ping" {
-		return json.Marshal(helloWorld{
-			A:              "ping",
-			B:              0,
-			C:              false,
-			TimeDateFormat: time.Now().Format(time.Stamp),
-			TimeDate:       time.Now().UTC(),
-		})
-	}
-	
-	return nil, errors.New(path)
-}
+#### Download private repo dependencies if above commands doesn't work
 
 ```
+export GITHUB_TOKEN=<YOUR_GITHUB_TOKEN>
+export GOPRIVATE=github.com/NubeIO
+go get -v
+```
 
+#### If both of them doesn't work
+
+- Check `~/.gitconfig` file & remove lines with `git config --global url."https://*` & then retry again
+
+```
+go build -o module-contrib-demo
+```
+
+## How to build and run (docker)
+
+### Pre-requisite
+
+- Running BIOS:
+    - https://nubeio.github.io/rubix-ce-docs/docs/rubix-ce/setup/docker/#install-and-run-the-rubix-stack
+- Install the latest ROS from rubix-ce (RCE)
+
+```
+bash docker-build.bash <GITHUB_TOKEN>
+```
+
+## How to build and run (local)
+
+### Prerequisite
+
+- Folder `<YOUR_ROS_PATH>` needs to have `app-amd64`
+
+To build and run rubix-os you can use the bash script.
+
+```
+bash build.bash <YOUR_ROS_PATH>
+```
+
+Example
+
+```
+bash build.bash ~/nube/rubix-os
+```
+
+### See naming rules
+
+- https://nubeio.github.io/rubix-ce-docs/docs/api-docs/modules/
+
+### How to add APIs
+
+- [api.go](pkg/api.go)

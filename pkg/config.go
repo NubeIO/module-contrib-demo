@@ -10,30 +10,28 @@ import (
 
 type Config struct {
 	Town     string        `yaml:"town"`
-	State    string        `yaml:"state"`
 	LoopTime time.Duration `yaml:"loop_time"`
 	LogLevel string        `yaml:"log_level"`
 }
 
-func (inst *Module) DefaultConfig() *Config {
+func (m *Module) DefaultConfig() *Config {
 	return &Config{
 		Town:     "Sydney",
-		State:    "NSW",
 		LoopTime: 1,
 		LogLevel: "INFO", // INFO, DEBUG, ERROR
 	}
 }
 
-func (inst *Module) getConfig() *Config {
-	return inst.config
+func (m *Module) getConfig() *Config {
+	return m.config
 }
 
-func (inst *Module) GetConfig() interface{} {
-	return inst.config
+func (m *Module) GetConfig() interface{} {
+	return m.config
 }
 
-func (inst *Module) ValidateAndSetConfig(config []byte) ([]byte, error) {
-	newConfig := inst.DefaultConfig()
+func (m *Module) ValidateAndSetConfig(config []byte) ([]byte, error) {
+	newConfig := m.DefaultConfig()
 	_ = yaml.Unmarshal(config, newConfig) // if unable to marshal just take the default one
 
 	logLevel, err := log.ParseLevel(newConfig.LogLevel)
@@ -48,7 +46,7 @@ func (inst *Module) ValidateAndSetConfig(config []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	inst.config = newConfig
+	m.config = newConfig
 
 	log.Info("config is set")
 	return newConfValid, nil

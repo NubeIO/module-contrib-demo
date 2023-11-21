@@ -1,20 +1,10 @@
 #!/bin/bash
 
-code_path=$1
+path=$1
 
-if [ "$code_path" = "" ];
-then
-    code_path="code/go"
-    echo NO PATH PROVIDED WILL USE: $code_path
-else
-    echo PATH PROVIDED WILL USE: $code_path
-fi
-
-path=$HOME/$code_path/rubix-os-build
-
+echo "***Path***"
 echo $path
-echo "****EXISTING MODULES****"
-ls  $path/data/modules
-echo "****EXISTING MODULES****"
+echo "****List module****"
+ls  $path/data/rubix-os/modules/module-contrib-demo/v0.0.0/
 
-go build -o module-contrib-demo && mkdir -p $path/data/modules && mv -f module-contrib-demo $path/data/modules && cd $path && ./app-amd64
+go build -o module-contrib-demo && mkdir -p $path/data/rubix-os/modules/module-contrib-demo/v0.0.0/ && mv -f module-contrib-demo $path/data/rubix-os/modules/module-contrib-demo/v0.0.0/ && cd $path && ./app-amd64

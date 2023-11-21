@@ -49,9 +49,8 @@ type helloWorld struct {
 }
 
 func (inst *Module) Get(path string) ([]byte, error) {
-	log.Infof("HTTP-GET path: %s", path)
-	//log.Info("HTTP-GET path:", strings.Contains(path, getWeather))
-	if path == ping { //http://0.0.0.0:1660/api/modules/module-contrib-demo/ping
+	log.Infof("HTTP GET path: %s", path)
+	if path == ping { // http://0.0.0.0:1660/api/modules/module-contrib-demo/ping
 		return json.Marshal(helloWorld{
 			A:              "ping",
 			B:              0,
@@ -72,7 +71,6 @@ func (inst *Module) Get(path string) ([]byte, error) {
 }
 
 func (inst *Module) Post(path string, body []byte) ([]byte, error) {
-
 	return nil, errors.New(errNotFound)
 }
 
@@ -81,11 +79,9 @@ func (inst *Module) Put(path, uuid string, body []byte) ([]byte, error) {
 }
 
 func (inst *Module) Patch(path, uuid string, body []byte) ([]byte, error) {
-
 	return nil, errors.New(errNotFound)
 }
 
 func (inst *Module) Delete(path, uuid string) ([]byte, error) {
-
 	return nil, errors.New(errNotFound)
 }

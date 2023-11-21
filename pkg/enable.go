@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	"github.com/NubeDev/bom-api/bom"
+	"github.com/NubeIO/bom-api/bom"
 	"github.com/NubeIO/nubeio-rubix-lib-models-go/pkg/v1/model"
 	log "github.com/sirupsen/logrus"
 )

@@ -54,10 +54,10 @@ func (m *Module) Get(path string) ([]byte, error) {
 		})
 	}
 
-	if strings.Contains(path, getWeather) { // test endpoint for getting the weather http://0.0.0.0:1660/api/modules/module-contrib-demo/weather/Sydney/NSW
+	if strings.Contains(path, getWeather) { // test endpoint for getting the weather http://0.0.0.0:1660/api/modules/module-contrib-demo/weather/Sydney
 		parts := urlSplit(path)
-		if len(parts) >= 3 {
-			weather, _, err := m.getWeather(parts[1], parts[2])
+		if len(parts) >= 2 {
+			weather, _, err := m.getWeather(parts[1])
 			return weather, err
 		}
 	}

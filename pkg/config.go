@@ -10,7 +10,6 @@ import (
 
 type Config struct {
 	Town     string        `yaml:"town"`
-	State    string        `yaml:"state"`
 	LoopTime time.Duration `yaml:"loop_time"`
 	LogLevel string        `yaml:"log_level"`
 }
@@ -18,7 +17,6 @@ type Config struct {
 func (m *Module) DefaultConfig() *Config {
 	return &Config{
 		Town:     "Sydney",
-		State:    "NSW",
 		LoopTime: 1,
 		LogLevel: "INFO", // INFO, DEBUG, ERROR
 	}

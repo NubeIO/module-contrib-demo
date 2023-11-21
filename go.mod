@@ -3,7 +3,7 @@ module github.com/NubeIO/module-contrib-demo
 go 1.18
 
 require (
-	github.com/NubeDev/bom-api v0.0.1
+	github.com/NubeIO/bom-api v1.0.0
 	github.com/NubeIO/nubeio-rubix-lib-helpers-go v0.2.7
 	github.com/NubeIO/nubeio-rubix-lib-models-go v1.9.15
 	github.com/NubeIO/rubix-os v0.0.90

@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	"github.com/NubeDev/bom-api/bom"
+	"github.com/NubeIO/bom-api/bom"
 	"github.com/NubeIO/rubix-os/module/shared"
 	"github.com/patrickmn/go-cache"
 	"time"

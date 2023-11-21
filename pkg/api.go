@@ -13,7 +13,6 @@ const (
 	jsonSchemaDevice  = "/schema/json/device"
 	jsonSchemaPoint   = "/schema/json/point"
 	ping              = "/ping"
-	getPoints         = "/points"
 	getWeather        = "/weather"
 )
 
@@ -40,48 +39,43 @@ func urlIsCorrectModule(path string) bool {
 	return false
 }
 
-type helloWorld struct {
-	A              string    `json:"a"`
-	B              int       `json:"b"`
-	C              bool      `json:"c"`
-	TimeDateFormat string    `json:"time_date_format"`
-	TimeDate       time.Time `json:"time_date"`
+type health struct {
+	FormattedDateTime string    `json:"formatted_date_time"`
+	TimeDate          time.Time `json:"time_date"`
 }
 
-func (inst *Module) Get(path string) ([]byte, error) {
+func (m *Module) Get(path string) ([]byte, error) {
 	log.Infof("HTTP GET path: %s", path)
+
 	if path == ping { // http://0.0.0.0:1660/api/modules/module-contrib-demo/ping
-		return json.Marshal(helloWorld{
-			A:              "ping",
-			B:              0,
-			C:              false,
-			TimeDateFormat: time.Now().Format(time.Stamp),
-			TimeDate:       time.Now().UTC(),
+		return json.Marshal(health{
+			FormattedDateTime: time.Now().Format(time.Stamp),
+			TimeDate:          time.Now().UTC(),
 		})
 	}
 
 	if strings.Contains(path, getWeather) { // test endpoint for getting the weather http://0.0.0.0:1660/api/modules/module-contrib-demo/weather/Sydney/NSW
 		parts := urlSplit(path)
 		if len(parts) >= 3 {
-			weather, _, err := inst.getWeather(parts[1], parts[2])
+			weather, _, err := m.getWeather(parts[1], parts[2])
 			return weather, err
 		}
 	}
-	return nil, errors.New(path)
-}
-
-func (inst *Module) Post(path string, body []byte) ([]byte, error) {
 	return nil, errors.New(errNotFound)
 }
 
-func (inst *Module) Put(path, uuid string, body []byte) ([]byte, error) {
+func (m *Module) Post(path string, body []byte) ([]byte, error) {
 	return nil, errors.New(errNotFound)
 }
 
-func (inst *Module) Patch(path, uuid string, body []byte) ([]byte, error) {
+func (m *Module) Put(path, uuid string, body []byte) ([]byte, error) {
 	return nil, errors.New(errNotFound)
 }
 
-func (inst *Module) Delete(path, uuid string) ([]byte, error) {
+func (m *Module) Patch(path, uuid string, body []byte) ([]byte, error) {
+	return nil, errors.New(errNotFound)
+}
+
+func (m *Module) Delete(path, uuid string) ([]byte, error) {
 	return nil, errors.New(errNotFound)
 }

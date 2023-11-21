@@ -16,24 +16,25 @@ type Module struct {
 	ErrorOnDB       bool
 	moduleDirectory string
 	bom             *bom.Client
+	enable          bool
 	demoPointUUID   string
 }
 
-func (inst *Module) Init(dbHelper shared.DBHelper, moduleName string) error {
+func (m *Module) Init(dbHelper shared.DBHelper, moduleName string) error {
 	grpcMarshaller := shared.GRPCMarshaller{DbHelper: dbHelper}
-	inst.dbHelper = dbHelper
-	inst.moduleName = moduleName
-	inst.grpcMarshaller = &grpcMarshaller
-	inst.store = cache.New(5*time.Minute, 10*time.Minute)
-	dir, err := inst.dbHelper.CreateModuleDataDir(moduleName)
+	m.dbHelper = dbHelper
+	m.moduleName = moduleName
+	m.grpcMarshaller = &grpcMarshaller
+	m.store = cache.New(5*time.Minute, 10*time.Minute)
+	dir, err := m.dbHelper.CreateModuleDataDir(moduleName)
 	if err != nil {
 		return err
 	}
-	inst.moduleDirectory = dir
+	m.moduleDirectory = dir
 	return nil
 }
 
-func (inst *Module) GetInfo() (*shared.Info, error) {
+func (m *Module) GetInfo() (*shared.Info, error) {
 	return &shared.Info{
 		Name:       name,
 		Author:     "Nube iO",

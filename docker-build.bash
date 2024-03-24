@@ -2,9 +2,8 @@
 
 MODULE_NAME="module-contrib-demo"
 BIOS_CONTAINER="bios"
-GITHUB_TOKEN=$1
 
-docker build -t module-builder -f Dockerfile.module --build-arg="GITHUB_TOKEN=$GITHUB_TOKEN" --build-arg="MODULE_NAME=$MODULE_NAME" .
+docker build -t module-builder -f Dockerfile.module --build-arg="MODULE_NAME=$MODULE_NAME" .
 docker run -d --name module-builder module-builder:latest
 docker container cp module-builder:/app/$MODULE_NAME .
 docker rm -f module-builder

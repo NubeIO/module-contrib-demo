@@ -1,17 +1,17 @@
 package pkg
 
 import (
-	"github.com/NubeIO/nubeio-rubix-lib-models-go/pkg/v1/model"
-	"github.com/NubeIO/rubix-os/utils/float"
+	"github.com/NubeIO/lib-utils-go/float"
+	"github.com/NubeIO/nubeio-rubix-lib-models-go/dto"
+	"github.com/NubeIO/nubeio-rubix-lib-models-go/model"
 	"reflect"
 )
 
-func writeBody(priority model.Priority) *model.PointWriter {
+func writeBody(priority model.Priority) *dto.PointWriter {
 	pri := convertPriority(priority)
-	body := &model.PointWriter{
-		Priority:     &pri,
-		PresentValue: nil,
-		ForceWrite:   false,
+	body := &dto.PointWriter{
+		Priority:   &pri,
+		ForceWrite: false,
 	}
 	return body
 }

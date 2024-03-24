@@ -2,12 +2,12 @@ package pkg
 
 import (
 	"github.com/NubeIO/bom-api/bom"
-	"github.com/NubeIO/nubeio-rubix-lib-models-go/pkg/v1/model"
+	"github.com/NubeIO/nubeio-rubix-lib-models-go/model"
 	log "github.com/sirupsen/logrus"
 )
 
 func (m *Module) Enable() error {
-	log.Errorf("enabling plugin %s...", name)
+	log.Errorf("enabling plugin %s...", m.moduleName)
 	m.bom = bom.New(&bom.Client{})
 	networkUUID, deviceUUID, pointUUID, err := m.getPointByName(networkName, deviceName, pointName)
 	if err != nil {
@@ -28,7 +28,7 @@ func (m *Module) Enable() error {
 }
 
 func (m *Module) Disable() error {
-	log.Infof("plugin is disabled...%s", name)
+	log.Infof("plugin is disabled...%s", m.moduleName)
 	m.enable = false
 	return nil
 }
@@ -38,7 +38,7 @@ func (m *Module) addDemoPoint(networkName, deviceName, pointName string, network
 	if networkUUID == nil {
 		network, err := m.grpcMarshaller.CreateNetwork(&model.Network{
 			Name:       networkName,
-			PluginPath: "system",
+			PluginName: "system",
 		})
 		if err != nil {
 			return nil, err

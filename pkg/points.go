@@ -2,14 +2,15 @@ package pkg
 
 import (
 	"errors"
-	"github.com/NubeIO/nubeio-rubix-lib-models-go/pkg/v1/model"
-	"github.com/NubeIO/rubix-os/args"
-	"github.com/NubeIO/rubix-os/module/common"
+	"github.com/NubeIO/lib-module-go/nmodule"
+	"github.com/NubeIO/nubeio-rubix-lib-models-go/dto"
+	"github.com/NubeIO/nubeio-rubix-lib-models-go/model"
+	"github.com/NubeIO/nubeio-rubix-lib-models-go/nargs"
 	log "github.com/sirupsen/logrus"
 )
 
 func (m *Module) getPointByName(networkName, deviceName, pointName string) (*string, *string, *string, error) {
-	network, err := m.grpcMarshaller.GetNetworkByName(networkName, args.Args{WithDevices: true, WithPoints: true})
+	network, err := m.grpcMarshaller.GetNetworkByName(networkName, &nmodule.Opts{Args: &nargs.Args{WithDevices: true, WithPoints: true}})
 	if err != nil {
 		log.Error(err)
 		return nil, nil, nil, err
@@ -32,16 +33,16 @@ func (m *Module) getPointByName(networkName, deviceName, pointName string) (*str
 	}
 }
 
-func (m *Module) pointWriteAt16(uuid string, value *float64) (*common.PointWriteResponse, error) {
+func (m *Module) pointWriteAt16(uuid string, value *float64) (*dto.PointWriteResponse, error) {
 	return m.grpcMarshaller.PointWrite(uuid, writeBody(model.Priority{P16: value}))
 }
 
-func (m *Module) pointWrite(uuid string, pointWriter *model.PointWriter) (*common.PointWriteResponse, error) {
+func (m *Module) pointWrite(uuid string, pointWriter *dto.PointWriter) (*dto.PointWriteResponse, error) {
 	return m.grpcMarshaller.PointWrite(uuid, pointWriter)
 }
 
 func (m *Module) getAllPoints(pluginName string) ([]*model.Point, error) {
-	get, err := m.grpcMarshaller.GetNetworksByPluginName(pluginName, args.Args{WithDevices: true, WithPoints: true})
+	get, err := m.grpcMarshaller.GetNetworksByPluginName(pluginName, &nmodule.Opts{Args: &nargs.Args{WithDevices: true, WithPoints: true}})
 	if err != nil {
 		log.Error(err)
 		return nil, err
